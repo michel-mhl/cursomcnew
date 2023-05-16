@@ -1,5 +1,6 @@
 package com.desenvolver.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,20 +17,19 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-
     private Double preco;
 
-
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "PRODUTO_CATEGORIA",
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-    private List<Categoria>categorias = new ArrayList<>();
+    private List<Categoria> categorias = new ArrayList<>();
 
     public Produto() {
     }
 
-    public Produto(Integer id, String nome,Double preco) {
+    public Produto(Integer id, String nome, Double preco) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -43,6 +43,7 @@ public class Produto implements Serializable {
     public void setPreco(Double preco) {
         this.preco = preco;
     }
+
     public Integer getId() {
         return id;
     }
@@ -66,6 +67,7 @@ public class Produto implements Serializable {
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

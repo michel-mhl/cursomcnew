@@ -2,6 +2,7 @@ package com.desenvolver.cursomc.services;
 
 import com.desenvolver.cursomc.domain.Categoria;
 import com.desenvolver.cursomc.repositories.CategoriaRepository;
+import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,12 @@ import java.util.Optional;
 public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
+
     @Transactional
     public Categoria findById(Integer id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.orElse(null);
+        return categoria.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 
     }
     @Transactional
