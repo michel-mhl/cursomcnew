@@ -1,29 +1,25 @@
 package com.desenvolver.cursomc.resources;
 
 import com.desenvolver.cursomc.domain.Categoria;
+import com.desenvolver.cursomc.services.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaResources {
-    Logger logger;
-    @GetMapping
-    public List<Categoria> listar() {
+    @Autowired
+    private CategoriaService categoriaService;
 
-        Categoria cat1 = new Categoria(1, "Informatica");
-        Categoria cat2 = new Categoria(2, "Escritorio");
-
-        List<Categoria> lista = new ArrayList<>();
-        lista.add(cat1);
-        lista.add(cat2);
-        return lista;
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        Categoria obj = categoriaService.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
 
