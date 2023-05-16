@@ -1,5 +1,6 @@
 package com.desenvolver.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -15,7 +16,8 @@ public class Categoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-  @JsonManagedReference
+
+   @JsonBackReference
    @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 

@@ -3,6 +3,7 @@ package com.desenvolver.cursomc.domain;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,8 @@ public class Cidade implements Serializable {
     @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;
+    @OneToMany(mappedBy = "cidade")
+    private List<Endereco> enderecos;
 
     public Cidade() {
     }
