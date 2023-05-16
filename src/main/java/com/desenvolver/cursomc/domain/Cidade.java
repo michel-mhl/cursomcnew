@@ -1,5 +1,6 @@
 package com.desenvolver.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,9 +15,11 @@ public class Cidade implements Serializable {
     private Integer id;
     private String nome;
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "estado_id")
     private Estado estado;
     @OneToMany(mappedBy = "cidade")
+    @JsonManagedReference
     private List<Endereco> enderecos;
 
     public Cidade() {
