@@ -1,7 +1,6 @@
 package com.desenvolver.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -18,10 +17,8 @@ public class Pedido {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instance;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-    @JsonManagedReference
     private Pagamento pagamento;
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     @ManyToOne
