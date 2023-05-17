@@ -3,7 +3,9 @@ package com.desenvolver.cursomc.domain;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Pedido {
@@ -21,16 +23,31 @@ public class Pedido {
     @JoinColumn(name = "endereco_de_entrega_id")
     private Endereco enderecoDeEntrega;
 
-    public Pedido(Integer id, Date instance,  Cliente cliente, Endereco enderecoDeEntrega) {
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itemPedidos = new HashSet<>();
+
+    public Pedido() {
+    }
+
+    public Pedido(Integer id, Date instance, Cliente cliente, Endereco enderecoDeEntrega) {
         this.id = id;
         this.instance = instance;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
-
     public Pagamento getPagamento() {
         return pagamento;
     }
+
+
+    public Set<ItemPedido> getItemPedidos() {
+        return itemPedidos;
+    }
+
+    public void setItemPedidos(Set<ItemPedido> itemPedidos) {
+        this.itemPedidos = itemPedidos;
+    }
+
 
     public void setPagamento(Pagamento pagamento) {
         this.pagamento = pagamento;
@@ -52,8 +69,6 @@ public class Pedido {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
-    public Pedido() {
-    }
 
     public Integer getId() {
         return id;
