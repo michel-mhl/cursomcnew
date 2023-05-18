@@ -27,4 +27,11 @@ public class CategoriaService {
         List<Categoria> list = categoriaRepository.findAll();
         return list;
     }
+
+
+    @Transactional
+    public Categoria insert(Categoria obj){
+        obj.setId(null);
+        return categoriaRepository.save(obj);
+    }
 }
