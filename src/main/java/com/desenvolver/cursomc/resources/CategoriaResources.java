@@ -2,7 +2,9 @@ package com.desenvolver.cursomc.resources;
 
 import com.desenvolver.cursomc.domain.Categoria;
 import com.desenvolver.cursomc.services.CategoriaService;
+import com.desenvolver.cursomc.services.exceptions.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,13 +24,15 @@ public class CategoriaResources {
         Categoria obj = categoriaService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
+
     @GetMapping()
-    public ResponseEntity<List<Categoria>> findAll(){
+    public ResponseEntity<List<Categoria>> findAll() {
         List<Categoria> list = categoriaService.findAll();
         return ResponseEntity.ok().body(list);
     }
+
     @PostMapping()
-    public ResponseEntity<Void> insert(@RequestBody      Categoria obj){
+    public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
         obj = categoriaService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -36,11 +40,20 @@ public class CategoriaResources {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Categoria obj,@PathVariable Integer id){
+    public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
         obj.setId(id);
         obj = categoriaService.update(obj);
-        return  ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        try {
+            categoriaService.delete(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException(" Nao é possivel excluir uma categoria que possui produtos ");
+        }
 
+        return ResponseEntity.noContent().build();
+    }
 }

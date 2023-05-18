@@ -2,9 +2,11 @@ package com.desenvolver.cursomc.services;
 
 import com.desenvolver.cursomc.domain.Categoria;
 import com.desenvolver.cursomc.repositories.CategoriaRepository;
+import com.desenvolver.cursomc.services.exceptions.DataIntegrityException;
 import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,22 +24,29 @@ public class CategoriaService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 
     }
+
     @Transactional
-    public List<Categoria>findAll(){
+    public List<Categoria> findAll() {
         List<Categoria> list = categoriaRepository.findAll();
         return list;
     }
 
 
     @Transactional
-    public Categoria insert(Categoria obj){
+    public Categoria insert(Categoria obj) {
         obj.setId(null);
         return categoriaRepository.save(obj);
     }
 
     @Transactional
-    public Categoria update(Categoria obj){
+    public Categoria update(Categoria obj) {
         findById(obj.getId());
-       return categoriaRepository.save(obj);
+        return categoriaRepository.save(obj);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        findById(id);
+        categoriaRepository.deleteById(id);
     }
 }
