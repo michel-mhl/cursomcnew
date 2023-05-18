@@ -50,10 +50,9 @@ public class CategoriaResources {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
             categoriaService.delete(id);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException(" Nao é possivel excluir uma categoria que possui produtos ");
         }
-
         return ResponseEntity.noContent().build();
     }
 }
