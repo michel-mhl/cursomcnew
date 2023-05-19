@@ -6,6 +6,8 @@ import com.desenvolver.cursomc.services.CategoriaService;
 import com.desenvolver.cursomc.services.exceptions.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -57,5 +59,16 @@ public class CategoriaResources {
             throw new DataIntegrityException(" Nao é possivel excluir uma categoria que possui produtos ");
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<CategoriaDTO>> findPage(
+          @RequestParam(value = "page",defaultValue = "0")  Integer page,
+          @RequestParam(value = "linesPerPage",defaultValue = "24")  Integer linesPerPage,
+          @RequestParam(value = "orderBy",defaultValue = "nome")  String orderBy,
+          @RequestParam(value = "direction",defaultValue = "ASC") Sort.Direction direction) {
+        Page<Categoria> list = categoriaService.findPage(page,linesPerPage,orderBy,direction);
+        Page<CategoriaDTO>listDto = list.map(obj -> new CategoriaDTO(obj));
+        return ResponseEntity.ok().body(listDto);
     }
 }

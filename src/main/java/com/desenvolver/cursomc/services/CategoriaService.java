@@ -5,6 +5,9 @@ import com.desenvolver.cursomc.repositories.CategoriaRepository;
 import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,5 +47,10 @@ public class CategoriaService {
     public void delete(Integer id) {
         findById(id);
         categoriaRepository.deleteById(id);
+    }
+
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, Sort.Direction direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.by(direction, orderBy));
+        return categoriaRepository.findAll(pageRequest);
     }
 }
