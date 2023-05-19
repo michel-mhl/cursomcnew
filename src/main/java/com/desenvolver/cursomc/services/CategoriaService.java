@@ -2,11 +2,9 @@ package com.desenvolver.cursomc.services;
 
 import com.desenvolver.cursomc.domain.Categoria;
 import com.desenvolver.cursomc.repositories.CategoriaRepository;
-import com.desenvolver.cursomc.services.exceptions.DataIntegrityException;
 import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,10 +25,8 @@ public class CategoriaService {
 
     @Transactional
     public List<Categoria> findAll() {
-        List<Categoria> list = categoriaRepository.findAll();
-        return list;
+        return categoriaRepository.findAll();
     }
-
 
     @Transactional
     public Categoria insert(Categoria obj) {
