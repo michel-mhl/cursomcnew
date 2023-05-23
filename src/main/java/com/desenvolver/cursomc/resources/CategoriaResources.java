@@ -9,9 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.naming.directory.BasicAttribute;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +39,8 @@ public class CategoriaResources {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+    public ResponseEntity<Void> insert(@Validated @RequestBody CategoriaDTO objDto) {
+        Categoria obj = categoriaService.fromDTO(objDto);
         obj = categoriaService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -45,7 +48,8 @@ public class CategoriaResources {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+    public ResponseEntity<Void> update(@Validated @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
+        Categoria obj = categoriaService.fromDTO(objDto);
         obj.setId(id);
         obj = categoriaService.update(obj);
         return ResponseEntity.noContent().build();

@@ -1,15 +1,18 @@
 package com.desenvolver.cursomc.dto;
 
 import com.desenvolver.cursomc.domain.Categoria;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
 public class CategoriaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
+
+    @NotNull
+    @Size(min = 5, max = 80,message ="O tamanho deve ser entre 5 e 80 caracteres" )
     private String nome;
 
     public CategoriaDTO() {

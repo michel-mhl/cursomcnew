@@ -1,6 +1,7 @@
 package com.desenvolver.cursomc.services;
 
 import com.desenvolver.cursomc.domain.Categoria;
+import com.desenvolver.cursomc.dto.CategoriaDTO;
 import com.desenvolver.cursomc.repositories.CategoriaRepository;
 import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
@@ -52,5 +53,8 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, Sort.Direction direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.by(direction, orderBy));
         return categoriaRepository.findAll(pageRequest);
+    }
+    public Categoria fromDTO(CategoriaDTO objDTO){
+        return  new Categoria(objDTO.getId(),objDTO.getNome());
     }
 }
