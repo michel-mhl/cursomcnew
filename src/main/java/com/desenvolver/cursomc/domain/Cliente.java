@@ -14,9 +14,18 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private String email;
     private String cpfOuCnpj;
     private Integer tipo;
 
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @ElementCollection
     @CollectionTable(name = "telefone")
@@ -32,11 +41,13 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(Integer id, String nome, String cpfOuCnpj, TipoCliente tipo) {
+    public Cliente(Integer id, String nome,String email,String cpfOuCnpj, TipoCliente tipo ) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
-        this.tipo = tipo.getCod();
+        this.tipo = (tipo == null) ? null : tipo.getCod();
+
     }
 
     public void setTipo(Integer tipo) {
