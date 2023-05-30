@@ -32,13 +32,14 @@ public class Cliente implements Serializable {
     private Set<String> telefones = new HashSet<>();
 
     @OneToMany(mappedBy = "cliente")
-    private List<Endereco> enderecos;
+    private List<Endereco> enderecos =new ArrayList<>();;
 
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente() {
+        this.enderecos = new ArrayList<>();
     }
 
     public Cliente(Integer id, String nome,String email,String cpfOuCnpj, TipoCliente tipo ) {
