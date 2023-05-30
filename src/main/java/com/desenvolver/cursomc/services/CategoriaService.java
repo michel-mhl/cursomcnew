@@ -1,6 +1,7 @@
 package com.desenvolver.cursomc.services;
 
 import com.desenvolver.cursomc.domain.Categoria;
+import com.desenvolver.cursomc.domain.Cliente;
 import com.desenvolver.cursomc.dto.CategoriaDTO;
 import com.desenvolver.cursomc.repositories.CategoriaRepository;
 import com.desenvolver.cursomc.services.exceptions.ObjectNotFoundException;
@@ -17,11 +18,11 @@ import java.util.Optional;
 @Service
 public class CategoriaService {
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoriaRepository repo;
 
     @Transactional
     public Categoria findById(Integer id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        Optional<Categoria> categoria = repo.findById(id);
         return categoria.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 
@@ -29,32 +30,36 @@ public class CategoriaService {
 
     @Transactional
     public List<Categoria> findAll() {
-        return categoriaRepository.findAll();
+        return repo.findAll();
     }
 
     @Transactional
     public Categoria insert(Categoria obj) {
         obj.setId(null);
-        return categoriaRepository.save(obj);
+        return repo.save(obj);
     }
 
-    @Transactional
     public Categoria update(Categoria obj) {
-        findById(obj.getId());
-        return categoriaRepository.save(obj);
+        Categoria newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
     }
 
     @Transactional
     public void delete(Integer id) {
         findById(id);
-        categoriaRepository.deleteById(id);
+        repo.deleteById(id);
     }
 
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, Sort.Direction direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.by(direction, orderBy));
-        return categoriaRepository.findAll(pageRequest);
+        return repo.findAll(pageRequest);
     }
     public Categoria fromDTO(CategoriaDTO objDTO){
         return  new Categoria(objDTO.getId(),objDTO.getNome());
+    }
+
+    private void updateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
     }
 }
